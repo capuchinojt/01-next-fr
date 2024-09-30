@@ -7,8 +7,12 @@
  Nail các version package trong package.json để tránh lỗi
 
 ## 2. Chọn tailwind component UI lib
- - Dùng [Preline](https://preline.co/docs/)
+ - Dùng [Flowbite-react](https://flowbite-react.com/docs/guides/next-js)
 
  ```bash
- $ npm install --save preline
+ $ npm i flowbite-react
+ $ npm i -D tailwindcss postcss autoprefixer
  ```
+
+  - [Editor setting cho tailwind-css](https://flowbite-react.com/docs/getting-started/editor-setup)
+  
