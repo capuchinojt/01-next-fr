@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import localFont from "next/font/local"
 import "@/app/globals.css"
+import { ThemeModeScript } from "flowbite-react"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -24,8 +25,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <script src="./node_modules/preline/dist/preline.js"></script>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <ThemeModeScript />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
