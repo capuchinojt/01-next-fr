@@ -15,7 +15,7 @@ import {
   HiUsers,
 } from 'react-icons/hi'
 
-const ExampleSidebar: FC = function () {
+const AdminSidebar: FC = function () {
   const [currentPage, setCurrentPage] = useState('')
 
   useEffect(() => {
@@ -104,4 +104,4 @@ const ExampleSidebar: FC = function () {
   )
 }
 
-export default ExampleSidebar
+export default AdminSidebar
