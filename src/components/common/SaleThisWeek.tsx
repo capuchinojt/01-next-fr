@@ -1,8 +1,9 @@
+'use client'
 import { FC } from "react"
 
 import { DatePickerCustom } from "@/components/common/DatePickerCustom"
 
-export const SalesThisWeek: FC = function () {
+const SalesThisWeek: FC = function () {
   return (
     <div className="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6 xl:p-8">
       <div className="mb-4 flex items-center justify-between">
@@ -59,3 +60,5 @@ export const SalesThisWeek: FC = function () {
     </div>
   )
 }
+
+export default SalesThisWeek

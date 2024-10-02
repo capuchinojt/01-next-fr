@@ -1,9 +1,11 @@
+'use client'
+
 import { FC } from 'react'
 import { Table } from 'flowbite-react'
 
 import { DatePickerCustom } from '@/components/common/DatePickerCustom'
 
-export const AcquisitionOverview: FC = function () {
+const AcquisitionOverview: FC = function () {
   return (
     <div className="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6 xl:p-8">
       <h3 className="mb-6 text-xl font-bold leading-none text-gray-900 dark:text-white">
@@ -186,3 +188,5 @@ export const AcquisitionOverview: FC = function () {
     </div>
   )
 }
+
+export default AcquisitionOverview

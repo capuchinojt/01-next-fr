@@ -1,9 +1,10 @@
+'use client'
 import { Table, Badge } from 'flowbite-react'
 import { FC } from 'react'
 
 import { DatePickerCustom } from '@/components/common/DatePickerCustom'
 
-export const LatestTransactions: FC = function () {
+const LatestTransactions: FC = function () {
   return (
     <div className="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6 xl:p-8">
       <div className="mb-4 flex items-center justify-between">
@@ -227,3 +228,5 @@ export const LatestTransactions: FC = function () {
     </div>
   )
 }
+
+export default LatestTransactions

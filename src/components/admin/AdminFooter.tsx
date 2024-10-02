@@ -1,9 +1,11 @@
+'use client'
+
 import { Footer } from 'flowbite-react'
 import type { FC } from 'react'
 import { MdFacebook } from 'react-icons/md'
 import { FaDribbble, FaGithub, FaInstagram, FaTwitter } from 'react-icons/fa'
 
-export const AdminFooter: FC = function () {
+const AdminFooter: FC = function () {
   return (
     <>
       <Footer container>
@@ -65,3 +67,5 @@ export const AdminFooter: FC = function () {
     </>
   )
 }
+
+export default AdminFooter
