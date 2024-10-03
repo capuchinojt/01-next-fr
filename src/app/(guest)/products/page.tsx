@@ -3,6 +3,7 @@ import React from 'react'
 import { ProductCarousel } from '@/components/product/ProductCarousel'
 import ProductCard from '@/components/product/ProductCard'
 import { SaleProductBanner } from '@/components/product/SaleProductBanner'
+import ProductFilterGroupButton from '@/components/product/ProductFilterGroupButton'
 
 const products = [
   {
@@ -74,6 +75,12 @@ const ProductDashboard = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           {/* Banner Section */}
           {isDisplaySaleBanner && <SaleProductBanner />}
+          <div className="py-5 flex flex-row align-middle centre">
+            <h2 className="font-semibold flex items-center pr-5 text-gray-900 dark:text-white">
+              Sort by
+            </h2>{' '}
+            <ProductFilterGroupButton />
+          </div>
 
           {/* Page Title */}
           <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
