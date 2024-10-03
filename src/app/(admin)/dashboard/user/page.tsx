@@ -1190,7 +1190,7 @@ const EditUserModal: FC = function () {
   return (
     <>
       <Button color="primary" onClick={() => setOpen(true)}>
-        <div className="flex items-center gap-x-2">
+        <div className="flex items-center gap-x-2 text-gray-900">
           <HiOutlinePencilAlt className="text-lg" />
           Edit user
         </div>
