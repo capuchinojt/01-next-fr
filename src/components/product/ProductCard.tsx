@@ -2,6 +2,7 @@
 import { FC, useState } from 'react'
 import { FaHeart, FaEllipsisV } from 'react-icons/fa'
 import RatingComponent from './ProductRating'
+import Link from 'next/link'
 
 interface ProductInfoProps {
   id: number
@@ -53,7 +54,9 @@ const ProductCard: FC<{ productInfo: ProductInfoProps }> = ({
       )}
 
       {/* Hình ảnh sản phẩm */}
-      <img src={image} alt={name} className="w-full h-48 object-cover" />
+      <Link href={`/products/${id}`}>
+        <img src={image} alt={name} className="w-full h-48 object-cover" />
+      </Link>
 
       {hoveredProduct === id && (
         <div className="absolute top-2 right-2 flex flex-col space-y-2">
@@ -71,7 +74,7 @@ const ProductCard: FC<{ productInfo: ProductInfoProps }> = ({
       {/* Nội dung sản phẩm */}
       <div className="p-4">
         <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
-          {name}
+          <Link href={`/products/${id}`}>{name}</Link>
         </h2>
         <p className="mt-2 text-gray-600 dark:text-gray-300">{description}</p>
         <div className="mt-4 flex">

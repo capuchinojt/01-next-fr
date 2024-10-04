@@ -4,6 +4,7 @@ import { ProductCarousel } from '@/components/product/ProductCarousel'
 import ProductCard from '@/components/product/ProductCard'
 import { SaleProductBanner } from '@/components/product/SaleProductBanner'
 import ProductFilterGroupButton from '@/components/product/ProductFilterGroupButton'
+import ProductSortByDropDown from '@/components/product/ProductSortByDropdown'
 
 const products = [
   {
@@ -76,10 +77,17 @@ const ProductDashboard = () => {
           {/* Banner Section */}
           {isDisplaySaleBanner && <SaleProductBanner />}
           <div className="py-5 flex flex-row align-middle centre">
-            <h2 className="font-semibold flex items-center pr-5 text-gray-900 dark:text-white">
-              Sort by
-            </h2>{' '}
-            <ProductFilterGroupButton />
+            <div className='flex w-1/12'>
+              <h2 className="font-semibold flex items-center pr-5 text-gray-900 dark:text-white">
+                Filter by
+              </h2>{' '}
+            </div>
+            <div className='flex w-9/12'>
+              <ProductFilterGroupButton />
+            </div>
+            <div className='flex w-2/12 justify-end'>
+              <ProductSortByDropDown />
+            </div>
           </div>
 
           {/* Page Title */}
