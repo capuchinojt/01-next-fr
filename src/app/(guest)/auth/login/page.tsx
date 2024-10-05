@@ -1,6 +1,20 @@
+'use client'
+
 import { Button, Card, Checkbox, Label, TextInput } from 'flowbite-react'
 
+import { authenticate } from '@/utils/actions'
+
 export default function LoginPage() {
+  const credentialsAction = async (formData: FormData) => {
+    console.log('>> check formData:: ', formData)
+    // const resData = await signIn("credentials", {...Object.fromEntries(formData), redirect: false})
+    const email = formData.get('email') as string | null;
+    const password = formData.get('password') as string | null;
+
+    const resData = await authenticate(email ?? '', password ?? '');
+    console.log('>> check resData:: ', resData)
+  }
+
   return (
     <div className="flex flex-col items-center justify-center px-6 lg:h-screen lg:gap-y-12">
       <div className="my-6 flex items-center gap-x-1 lg:my-0">
@@ -22,11 +36,11 @@ export default function LoginPage() {
         <h1 className="mb-3 text-2xl font-bold dark:text-white md:text-2xl">
           Sign in to platform
         </h1>
-        <form>
+        <form action={credentialsAction}>
           <div className="mb-4 flex flex-col gap-y-3">
             <Label htmlFor="email">Your email</Label>
             <TextInput
-              id="email"
+              id="credentials-email"
               name="email"
               placeholder="name@company.com"
               type="email"
@@ -35,7 +49,7 @@ export default function LoginPage() {
           <div className="mb-6 flex flex-col gap-y-3">
             <Label htmlFor="password">Your password</Label>
             <TextInput
-              id="password"
+              id="credentials-password"
               name="password"
               placeholder="••••••••"
               type="password"

@@ -23,3 +23,19 @@
  ```bash
  $ npm install --save recharts @types/recharts
  ```
+
+## 4. Sử dụng [next-auth](https://authjs.dev/getting-started/installation?framework=Next.js) để thực hiện việc xác thực
+
+```bash
+$ npm i --save-exact next-auth@5.0.0-beta.22
+
+# Cài đặt auth secret
+$ npx auth secret
+```
+
+## 5. Sử dụng node-fetch để fetch API 
+
+```bash
+$ npm i --save-exact node-fetch@3.3.2
+```
+

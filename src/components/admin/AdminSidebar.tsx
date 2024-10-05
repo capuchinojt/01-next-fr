@@ -70,10 +70,10 @@ const AdminSidebar: FC = function () {
               >
                 Users list
               </Sidebar.Item>
-              <Sidebar.Item href="/authentication/sign-in" icon={HiLogin}>
+              <Sidebar.Item href="/auth/login" icon={HiLogin}>
                 Sign in
               </Sidebar.Item>
-              <Sidebar.Item href="/authentication/sign-up" icon={HiPencil}>
+              <Sidebar.Item href="/auth/register" icon={HiPencil}>
                 Sign up
               </Sidebar.Item>
             </Sidebar.ItemGroup>
