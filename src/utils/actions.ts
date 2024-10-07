@@ -1,6 +1,6 @@
 'use server'
 import { signIn } from '@/auth'
-import { ErrorCustomType, ERROR_CODES } from '@/types/Error.type'
+import { ErrorCustomType, errors } from '@/types/error.type'
 
 export async function authenticate(email: string, password: string) {
   try {
@@ -18,23 +18,14 @@ export async function authenticate(email: string, password: string) {
 }
 
 const checkError = (error: ErrorCustomType) => {
-  const errors = {
-    InvalidLoginError: {
-      error: 'Incorrect username or password',
-      code: ERROR_CODES.INVALID_LOGIN_CREDENTIALS
-    },
-    InternalError: {
-      error: 'Something went wrong, please try again later',
-      code: ERROR_CODES.INTERNAL_SERVER_ERROR
-    },
-    InactiveAccountError: {
-      error: 'Your account is not active',
-      code: ERROR_CODES.UNAUTHORIZED
-    }
-  }
-
-  return errors[error?.name as keyof typeof errors] ?? {
-    error: 'Something went wrong, please try again later',
-    code: ERROR_CODES.INTERNAL_SERVER_ERROR
-  }
+  return errors[error?.name as keyof typeof errors] ?? errors.InternalServerError
 }
+
+export const checkErrorByCode = async (code: number) => {
+  const errorEntry = Object.values(errors).find((entry) => entry.code === code)
+
+  return (
+    errorEntry ?? errors.InternalServerError
+  )
+}
+
