@@ -6,8 +6,6 @@ import { authenticate } from '@/utils/actions'
 
 export default function LoginPage() {
   const credentialsAction = async (formData: FormData) => {
-    console.log('>> check formData:: ', formData)
-    // const resData = await signIn("credentials", {...Object.fromEntries(formData), redirect: false})
     const email = formData.get('email') as string | null;
     const password = formData.get('password') as string | null;
 

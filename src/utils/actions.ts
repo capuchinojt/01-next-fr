@@ -18,7 +18,7 @@ export async function authenticate(email: string, password: string) {
 }
 
 const checkError = (error: ErrorCustomType) => {
-  return errors[error?.name as keyof typeof errors] ?? errors.InternalServerError
+  return errors[error?.type as keyof typeof errors] ?? errors.InternalServerError
 }
 
 export const checkErrorByCode = async (code: number) => {

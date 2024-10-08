@@ -21,7 +21,7 @@ export class CustomAuthError extends AuthError {
       }
     } else {
       // Nếu không có mã lỗi, sử dụng giá trị của error (nếu có)
-      this.type = error || ({} as ErrorExpendCustomType); // Assign an empty object if error is undefined
+      this.type = error ?? ({} as ErrorExpendCustomType); // Assign an empty object if error is undefined
     }
   }
 }

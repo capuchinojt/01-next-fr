@@ -20,6 +20,7 @@ export const ERROR_CODES = {
   PASSWORD_RESET_FAILED: 1003,
   EMAIL_ALREADY_EXISTS: 1004,
   CONTENT_CANNOT_BE_EMPTY: 1005,
+  INACTIVE_ACCOUNT: 1006,
 }
 
 export const getErrorKeyByCode = (code: number): string | undefined => {
@@ -32,18 +33,23 @@ export type ErrorExpendCustomType = AuthError['type'] & {
   InvalidLoginError: typeof InvalidLoginError,
   InactiveAccountError: typeof InactiveAccountError,
   InternalServerError: typeof InternalServerError,
+  Unauthorized: typeof Unauthorized
 }
 
 export class InvalidLoginError extends AuthError {
-  static readonly type = 'InvalidLogin'
+  static readonly type = getErrorKeyByCode(ERROR_CODES.INVALID_LOGIN_CREDENTIALS)
 }
 
 export class InactiveAccountError extends AuthError {
-  static readonly type = 'InactiveAccount'
+  static readonly type = getErrorKeyByCode(ERROR_CODES.INACTIVE_ACCOUNT)
 }
 
 export class InternalServerError extends AuthError {
-  static readonly type = 'InternalServerError'
+  static readonly type = getErrorKeyByCode(ERROR_CODES.INTERNAL_SERVER_ERROR)
+}
+
+export class Unauthorized extends AuthError {
+  static readonly type = getErrorKeyByCode(ERROR_CODES.UNAUTHORIZED)
 }
 
 export const errors = {
@@ -57,6 +63,10 @@ export const errors = {
   },
   InactiveAccountError: {
     error: 'Your account is not active',
+    code: ERROR_CODES.INACTIVE_ACCOUNT,
+  },
+  Unauthorized: {
+    error: 'Unauthorized access',
     code: ERROR_CODES.UNAUTHORIZED,
   },
 }
