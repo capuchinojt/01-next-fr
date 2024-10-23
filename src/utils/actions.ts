@@ -1,31 +1,22 @@
 'use server'
 import { signIn } from '@/auth'
-import { ErrorCustomType, errors } from '@/types/error.type'
+import { ERROR_CODES, ErrorCustomType, errors, errorsByCode } from '@/types/error.type'
 
 export async function authenticate(email: string, password: string) {
   try {
-    const r = await signIn('credentials', {
+    const result = await signIn('credentials', {
       username: email,
       password: password,
       callbackUrl: '/',
       redirect: false,
     })
-    return r
-  } catch (error) {
-    console.log('>> check error authenticate:: ', JSON.stringify(error))
-    return checkError(error as ErrorCustomType)
+    console.log('success authenticate data:: ', result)
+    return result
+  } catch (error: ErrorCustomType | any) {
+    const errorByCode = errors.get(error?.type) || errorsByCode[ERROR_CODES.INTERNAL_SERVER_ERROR]
+    console.log('>>> check error authenticate:: ', errorByCode)
+    return {
+      error: errorByCode
+    }
   }
 }
-
-const checkError = (error: ErrorCustomType) => {
-  return errors[error?.type as keyof typeof errors] ?? errors.InternalServerError
-}
-
-export const checkErrorByCode = async (code: number) => {
-  const errorEntry = Object.values(errors).find((entry) => entry.code === code)
-
-  return (
-    errorEntry ?? errors.InternalServerError
-  )
-}
-

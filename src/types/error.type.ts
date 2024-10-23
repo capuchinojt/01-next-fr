@@ -38,6 +38,10 @@ export type ErrorExpendCustomType = AuthError['type'] & {
 
 export class InvalidLoginError extends AuthError {
   static readonly type = getErrorKeyByCode(ERROR_CODES.INVALID_LOGIN_CREDENTIALS)
+  constructor(message?: string){
+    super()
+    this.message = message || 'Incorrect username or password'
+  }
 }
 
 export class InactiveAccountError extends AuthError {
@@ -52,21 +56,49 @@ export class Unauthorized extends AuthError {
   static readonly type = getErrorKeyByCode(ERROR_CODES.UNAUTHORIZED)
 }
 
-export const errors = {
-  InvalidLoginError: {
-    error: 'Incorrect username or password',
-    code: ERROR_CODES.INVALID_LOGIN_CREDENTIALS,
+export const errorsByCode = {
+  [ERROR_CODES.INVALID_LOGIN_CREDENTIALS]: {
+    error: 'InvalidLoginError',
+    message: 'Incorrect username or password',
   },
-  InternalServerError: {
-    error: 'Something went wrong, please try again later',
-    code: ERROR_CODES.INTERNAL_SERVER_ERROR,
+  [ERROR_CODES.INTERNAL_SERVER_ERROR]: {
+    error: 'InternalServerError',
+    message: 'Something went wrong, please try again later',
   },
-  InactiveAccountError: {
-    error: 'Your account is not active',
-    code: ERROR_CODES.INACTIVE_ACCOUNT,
+  [ERROR_CODES.INACTIVE_ACCOUNT]: {
+    error: 'InactiveAccountError',
+    message: 'Your account is not active',
   },
-  Unauthorized: {
-    error: 'Unauthorized access',
-    code: ERROR_CODES.UNAUTHORIZED,
+  [ERROR_CODES.UNAUTHORIZED]: {
+    error: 'Unauthorized',
+    message: 'Unauthorized access',
   },
 }
+
+export const errors = new Map([
+  [
+    'INVALID_LOGIN_CREDENTIALS',
+    {
+      message: 'Incorrect username or password',
+      code: ERROR_CODES.INVALID_LOGIN_CREDENTIALS,
+    },
+  ],
+  [
+    'INTERNAL_SERVER_ERROR',
+    {
+      message: 'Something went wrong, please try again later',
+      code: ERROR_CODES.INTERNAL_SERVER_ERROR,
+    },
+  ],
+  [
+    'INACTIVE_ACCOUNT',
+    {
+      message: 'Your account is not active',
+      code: ERROR_CODES.INACTIVE_ACCOUNT,
+    },
+  ],
+  [
+    'UNAUTHORIZED',
+    { message: 'Unauthorized access', code: ERROR_CODES.UNAUTHORIZED },
+  ],
+])

@@ -1,9 +1,11 @@
 export interface FetchDataResponse<T> {
   data: T | null
   error: {
-    code: number,
+    code: number
     message: string
   } | null
+  status?: number
+  statusText?: string
 }
 
 export interface FetchOptions {
@@ -13,14 +15,22 @@ export interface FetchOptions {
 }
 
 interface SignInResponse {
-  user: {
-    _id: string
-    name: string
-    email: string
-    isActive: boolean,
-    role: 'string'
-  }
+  user: IUser
   accessToken: string | null
   error: string | null
   code: number
+}
+
+interface IUser {
+  _id?: string
+  name?: string
+  email?: string
+  isActive?: boolean
+  role?: string
+  avatar?: string
+}
+
+interface ISession {
+  user: IUser
+  expires: string
 }

@@ -1,16 +1,35 @@
 'use client'
 
-import { Button, Card, Checkbox, Label, TextInput } from 'flowbite-react'
+import { Alert, Button, Card, Checkbox, Label, Spinner, TextInput } from 'flowbite-react'
+import { useState } from 'react'
 
 import { authenticate } from '@/utils/actions'
+import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
-  const credentialsAction = async (formData: FormData) => {
-    const email = formData.get('email') as string | null;
-    const password = formData.get('password') as string | null;
+  const [error, setError] = useState<string | null>(null)
+  const [isLoading, setLoading] = useState<boolean>(false)
+  const router = useRouter()
 
-    const resData = await authenticate(email ?? '', password ?? '');
-    console.log('>> check resData:: ', resData)
+  const onSubmitForm = async (formData: FormData) => {
+    setError(null)
+    setLoading(true)
+    try {
+      const email = formData.get('email') as string | null;
+      const password = formData.get('password') as string | null;
+
+      const resData = await authenticate(email ?? '', password ?? '');
+      console.log('>> check resData:: ', resData)
+      if (resData?.error) {
+        throw new Error(resData?.error.message || 'Login failed')
+      } else {
+        router.push('/dashboard')
+      }
+    } catch (error: any) {
+      setError(error.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -34,7 +53,7 @@ export default function LoginPage() {
         <h1 className="mb-3 text-2xl font-bold dark:text-white md:text-2xl">
           Sign in to platform
         </h1>
-        <form action={credentialsAction}>
+        <form action={onSubmitForm}>
           <div className="mb-4 flex flex-col gap-y-3">
             <Label htmlFor="email">Your email</Label>
             <TextInput
@@ -66,13 +85,25 @@ export default function LoginPage() {
             </a>
           </div>
           <div className="mb-6">
-            <Button type="submit" className="w-full lg:w-auto">
-              Login to your account
+            <Button
+              type="submit"
+              className="w-full lg:w-auto min-w-44"
+              disabled={isLoading}
+            >
+              {isLoading ? <Spinner color="info" /> : 'Login to your account'}
             </Button>
           </div>
+          {error && (
+            <Alert color="failure" className='mb-4'>
+              <span className="font-medium">{error}</span>
+            </Alert>
+          )}
           <p className="text-sm text-gray-500 dark:text-gray-300">
             <span>Not registered?&nbsp;</span>
-            <a href="http://localhost:3000/auth/register" className="text-primary-600 dark:text-primary-300">
+            <a
+              href="http://localhost:3000/auth/register"
+              className="text-primary-600 dark:text-primary-300 font-semibold"
+            >
               Create account
             </a>
           </p>

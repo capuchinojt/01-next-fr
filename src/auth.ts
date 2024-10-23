@@ -1,19 +1,18 @@
 import NextAuth from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
 
-import { CustomAuthError } from '@/utils/error'
-import { commonFetch } from '@/utils/api'
-import { checkErrorByCode } from '@/utils/actions'
-import { SignInResponse } from '@/types/backend'
+import { sendRequest } from '@/utils/api'
+import { IUser, SignInResponse } from '@/types/backend'
 import {
-  ErrorExpendCustomType,
+  ERROR_CODES,
   InactiveAccountError,
+  InternalServerError,
   InvalidLoginError,
 } from '@/types/error.type'
 
 const host =
-  // 'https://9000-idx-02-nest-begit-1726557855514.cluster-a3grjzek65cxex762e4mwrzl46.cloudworkstations.dev'
-  'http://localhost:8080'
+  'https://9000-idx-02-nest-begit-1726557855514.cluster-a3grjzek65cxex762e4mwrzl46.cloudworkstations.dev'
+  // 'http://localhost:8080'
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -30,12 +29,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           throw new InvalidLoginError()
         }
 
-        // const headers = {
-        //   Authorization:
-        //     'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2Nsb3VkLmdvb2dsZS5jb20vd29ya3N0YXRpb25zIiwiYXVkIjoiaWR4LTAyLW5lc3QtYmVnaXQtMTcyNjU1Nzg1NTUxNC5jbHVzdGVyLWEzZ3JqemVrNjVjeGV4NzYyZTRtd3J6bDQ2LmNsb3Vkd29ya3N0YXRpb25zLmRldiIsImlhdCI6MTcyODI3MjQ3MSwiZXhwIjoxNzI4Mjc2MDcxfQ.iw5voV7pp5R2yQDhonWYMGFRh7WgiNzN0T9fnfOfUHd5-8s9qYT8M1BGa1-cTL-kWOvJ-1xs9SK2BLczeUTBHdOgly-nC38JSIZwIUT2J7WJ28Jnf-Iked9U3gM_qEA_Oqu62cxVmIl9CZpgi8t8wd950w4V_rW78Tm3a-yzuuT3YfeALMFdjpFlUPHUft0ZR_WuV13wGYqu3ELklbI-Hn8Npp2-zswjEY1ERBf6bfD2Mw0pXJEzVxDVSoPwB6OoD95IIw3c945RGxxuxgYBLlr4jLukR1rtMopx4d_x3J63FcHVAkxm_bnGpqB6WkBZGb12jj4qBe60N2eUPHg4AA',
-        // }
+        const headers = {
+          Authorization:
+            'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2Nsb3VkLmdvb2dsZS5jb20vd29ya3N0YXRpb25zIiwiYXVkIjoiaWR4LTAyLW5lc3QtYmVnaXQtMTcyNjU1Nzg1NTUxNC5jbHVzdGVyLWEzZ3JqemVrNjVjeGV4NzYyZTRtd3J6bDQ2LmNsb3Vkd29ya3N0YXRpb25zLmRldiIsImlhdCI6MTcyOTY1MzQxNywiZXhwIjoxNzI5NjU3MDE3fQ.MoZHom6aUW2MXlsQXOaRFAfqQUddierAgeIYlDoyyvaNdqOvzhLj0D6RJZKWMSv_caLsB_vjDywCboOV273xZyuVQuCUycPCYgmzUur9LGYVo_Px_9zlO_Zk9UyxnUuwDbooNRcgKa1ZFGAEeQd_R6TAZ5ML86q1blByKty1qb0xRe6uLhQD3ZpLWqwBQEO6Qdb7euLjZx000FqmZZmrewaDh7u25wJusLgrUTOpznscL6HfWkt7eS9sznpzwOUWpqsKhrG2LS6W104XhdpvvYMN5CQE8ejuVBnNGh3BIcz8pbL5HcCHlQe2JYEOXggttVEYleVH1rQ2D8HGIoT_yw',
+        }
 
-        const response = await commonFetch(
+        const response = await sendRequest(
           `${host}/api/v1/auth/signIn`,
           {
             method: 'POST',
@@ -43,37 +42,52 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               email: credentials?.username,
               password: credentials?.password,
             } as { email: string; password: string },
-            // headers,
+            headers,
           }
-        )
+        ) as { data?: any; error?: any, status?: number }
 
-        console.log('>> check response:: ', response)
         const { data, error } = response
 
-        if (!data || error) {
-          console.error(`Error fetching data Error::[${error?.code}] - ${error?.message}`)
-          const customError = await checkErrorByCode(error?.code ?? 500)
-          console.log('>> check customError:: ', customError)
-          throw new CustomAuthError(
-            customError.error as ErrorExpendCustomType,
-            customError.code
-          )
+        if (error) {
+          console.log(`>> Response for error case:: `, error)
         }
-
-        const { user } = data as SignInResponse
-        if (!data) {
-          throw new InvalidLoginError()
-        }
-
-        if (!user?.isActive) {
+        if (response?.status === 200) {
+          const { user } = data?.data as SignInResponse
+          if (!user) {
+            throw new InvalidLoginError()
+          }
+          console.log('>> Response for success case:: ', user)
+          return user
+        } else if (error?.code === ERROR_CODES.INACTIVE_ACCOUNT) {
           throw new InactiveAccountError()
+        } else if (error?.code === ERROR_CODES.INVALID_LOGIN_CREDENTIALS) {
+          throw new InvalidLoginError()
+        } else {
+          throw new InternalServerError()
         }
-
-        return user
       },
     }),
   ],
   pages: {
     signIn: '/auth/login',
+  },
+  callbacks: {
+    jwt({ token, user }) {
+      // console.log('check data callback jwt:: ', {token, user})
+      if (user) { // User is available during sign-in
+        token.user = (user as IUser)
+      }
+      return token
+    },
+    session({ session, token }) {
+      if (token?.user) {
+        (session.user as IUser) = token.user
+      }
+      return session
+    },
+    authorized: async ({ auth }) => {
+      // console.log('>> check data callback authorized:: ', auth)
+      return !!auth
+    }
   },
 })

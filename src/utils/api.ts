@@ -1,6 +1,6 @@
 import { FetchDataResponse, FetchOptions } from "@/types/backend"
 
-export const commonFetch = async <T>(
+export const sendRequest = async <T>(
   url: string,
   options: FetchOptions = {}
 ): Promise<FetchDataResponse<T>> => {
@@ -24,19 +24,26 @@ export const commonFetch = async <T>(
     const response = await fetch(url, fetchOptions)
 
     if (!response.ok) {
-      console.log('>> commonFetch check response:: ', response)
+      const { errorCode, message } = await response.json()
+
       return {
         data: null,
         error: {
-          message: response.statusText,
-          code: response.status,
+          message,
+          code: errorCode,
         },
+        status: response.status,
+        statusText: response.statusText
       }
     }
 
-    // Parse dữ liệu JSON từ response
     const data: T = await response.json()
-    return { data, error: null }
+    return {
+      data,
+      error: null,
+      status: response.status,
+      statusText: response.statusText,
+    }
   } catch (error: unknown) {
     console.error('Fetch error:', error) // Handle non-Error cases
     return { data: null, error: {
