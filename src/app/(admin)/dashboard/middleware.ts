@@ -7,7 +7,7 @@ export const config = {
      */
     '/about/:path*',
     '/dashboard/:path*',
-
+    '/((?!_next/static|_next/image|favicon.ico|public/images|api/auth|auth/login|auth/register).*)',
     /*
      * Match all request paths except for the ones starting with:
      * - api (API routes)
