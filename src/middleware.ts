@@ -1,7 +1,6 @@
 import { auth } from '@/auth'
 
 export default auth((req) => {
-  console.log('>> check data url:: ', req.nextUrl.pathname)
   const isExcludedPath =
     req.nextUrl.pathname.startsWith('/images') ||
     req.nextUrl.pathname === '/auth/register'
