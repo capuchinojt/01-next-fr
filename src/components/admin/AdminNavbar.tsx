@@ -1,7 +1,7 @@
-'use client'
-
 import type { FC } from 'react'
-import { Button, DarkThemeToggle, Navbar } from 'flowbite-react'
+import { Button, DarkThemeToggle, Navbar, NavbarBrand } from 'flowbite-react'
+
+import UserInfoHeader from '@/components/common/UserInfoHeader'
 
 const AdminNavbar: FC = function () {
   return (
@@ -9,7 +9,7 @@ const AdminNavbar: FC = function () {
       <div className="w-full p-3 lg:px-5 lg:pl-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <Navbar.Brand href="/">
+            <NavbarBrand href="/">
               <img
                 alt="logoImage"
                 src="/images/logo.svg"
@@ -18,7 +18,7 @@ const AdminNavbar: FC = function () {
               <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">
                 Flowbite
               </span>
-            </Navbar.Brand>
+            </NavbarBrand>
           </div>
           <div className="flex items-center gap-3">
             <iframe
@@ -32,6 +32,9 @@ const AdminNavbar: FC = function () {
               Upgrade to Pro
             </Button>
             <DarkThemeToggle />
+            <div className="flex items-center gap-4">
+              <UserInfoHeader />
+            </div>
           </div>
         </div>
       </div>

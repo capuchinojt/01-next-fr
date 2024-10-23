@@ -10,6 +10,7 @@ async function withUserInfo<P extends WithUserProps>(
   WrappedComponent: ComponentType<P>
 ) {
   const session = await auth()
+  console.log('>> Check session:: ', session)
   if (!session) {
     return null
   }
