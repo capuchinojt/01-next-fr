@@ -1,6 +1,8 @@
+'use client'
 import { Avatar, Dropdown, DropdownHeader, DropdownItem } from 'flowbite-react'
 
 import { IUser } from '@/types/backend'
+import { signOut } from 'next-auth/react'
 
 interface UserInfoComponentProps {
   userInfo: IUser
@@ -23,15 +25,17 @@ export const UserInfoComponent = ({ userInfo }: UserInfoComponentProps) => {
         />
       }
     >
-      <DropdownHeader>
+      <Dropdown.Header>
         <span className="block text-sm">{userInfo.name}</span>
         <span className="block truncate text-sm font-medium">
           {userInfo.email}
         </span>
-      </DropdownHeader>
-      <DropdownItem>Profile</DropdownItem>
-      <DropdownItem>Settings</DropdownItem>
-      <DropdownItem>Logout</DropdownItem>
+      </Dropdown.Header>
+      <Dropdown.Item>Profile</Dropdown.Item>
+      <Dropdown.Item>Settings</Dropdown.Item>
+      <Dropdown.Item>
+        <span onClick={() => signOut({ redirect: true, redirectTo: '/'})}>Logout</span>
+      </Dropdown.Item>
     </Dropdown>
   )
 }
