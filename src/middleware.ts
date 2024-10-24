@@ -1,6 +1,6 @@
-import { auth } from '@/auth'
+import { auth as middleware } from '@/auth'
 
-export default auth((req) => {
+export default middleware((req) => {
   const isExcludedPath =
     req.nextUrl.pathname.startsWith('/images') ||
     req.nextUrl.pathname === '/auth/register'
