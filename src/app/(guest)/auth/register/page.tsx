@@ -1,6 +1,63 @@
-import { Button, Card, Checkbox, Label, TextInput } from 'flowbite-react'
+'use client'
+
+import { sendRequest } from '@/utils/api'
+import { getUsernameFromEmail } from '@/utils/common.utils'
+import { Alert, Button, Card, Checkbox, Label, TextInput } from 'flowbite-react'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 export default function RegisterPage() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+  })
+
+  const [error, setError] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsLoading(true)
+    setError(null)
+    setSuccessMessage(null)
+
+    try {
+      const response = await sendRequest('/api/register', {
+        method: 'POST',
+        body: {
+          ...formData,
+          name: getUsernameFromEmail(formData?.email)
+        },
+      })
+
+      console.log('>> Check response:: ', response)
+      const { data, error }: { data: any, error: any} = response
+      if (error) {
+        throw new Error('Registration failed')
+      }
+
+      const route = useRouter()
+      route.push(`/verify/${data?.id}`)
+
+      setSuccessMessage('Registration successful!')
+      console.log('User registered:', data)
+    } catch (error) {
+      setError((error as Error).message)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
     <div className="flex flex-col items-center justify-center px-6 lg:h-screen lg:gap-y-12">
       <div className="my-6 flex items-center gap-x-1 lg:my-0">
@@ -22,7 +79,7 @@ export default function RegisterPage() {
         <h1 className="mb-3 text-2xl font-bold dark:text-white md:text-2xl">
           Create a Free Account
         </h1>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="mb-4 flex flex-col gap-y-3">
             <Label htmlFor="email">Your email</Label>
             <TextInput
@@ -30,6 +87,7 @@ export default function RegisterPage() {
               name="email"
               placeholder="name@company.com"
               type="email"
+              onChange={handleChange}
             />
           </div>
           <div className="mb-6 flex flex-col gap-y-3">
@@ -39,6 +97,7 @@ export default function RegisterPage() {
               name="password"
               placeholder="••••••••"
               type="password"
+              onChange={handleChange}
             />
           </div>
           <div className="mb-6 flex flex-col gap-y-3">
@@ -48,6 +107,7 @@ export default function RegisterPage() {
               name="confirmPassword"
               placeholder="••••••••"
               type="password"
+              onChange={handleChange}
             />
           </div>
           <div className="mb-6 flex items-center gap-x-3">
@@ -59,6 +119,11 @@ export default function RegisterPage() {
               </a>
             </Label>
           </div>
+          {error && (
+            <Alert color="failure" className='mb-4 items-center'>
+              <span className="font-medium">{error}</span>
+            </Alert>
+          )}
           <div className="mb-7">
             <Button type="submit" className="w-full lg:w-auto">
               Create account

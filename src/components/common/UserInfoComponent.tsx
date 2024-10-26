@@ -33,8 +33,8 @@ export const UserInfoComponent = ({ userInfo }: UserInfoComponentProps) => {
       </Dropdown.Header>
       <Dropdown.Item>Profile</Dropdown.Item>
       <Dropdown.Item>Settings</Dropdown.Item>
-      <Dropdown.Item>
-        <span onClick={() => signOut({ redirect: true, redirectTo: '/'})}>Logout</span>
+      <Dropdown.Item onClick={() => signOut({ redirect: true, redirectTo: '/'})}>
+        Logout
       </Dropdown.Item>
     </Dropdown>
   )

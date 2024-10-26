@@ -10,10 +10,6 @@ import {
   InvalidLoginError,
 } from '@/types/error.type'
 
-const host =
-  'https://9000-idx-02-nest-begit-1726557855514.cluster-a3grjzek65cxex762e4mwrzl46.cloudworkstations.dev'
-  // 'http://localhost:8080'
-
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
@@ -29,20 +25,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           throw new InvalidLoginError()
         }
 
-        const headers = {
-          Authorization:
-            'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2Nsb3VkLmdvb2dsZS5jb20vd29ya3N0YXRpb25zIiwiYXVkIjoiaWR4LTAyLW5lc3QtYmVnaXQtMTcyNjU1Nzg1NTUxNC5jbHVzdGVyLWEzZ3JqemVrNjVjeGV4NzYyZTRtd3J6bDQ2LmNsb3Vkd29ya3N0YXRpb25zLmRldiIsImlhdCI6MTcyOTY1MzQxNywiZXhwIjoxNzI5NjU3MDE3fQ.MoZHom6aUW2MXlsQXOaRFAfqQUddierAgeIYlDoyyvaNdqOvzhLj0D6RJZKWMSv_caLsB_vjDywCboOV273xZyuVQuCUycPCYgmzUur9LGYVo_Px_9zlO_Zk9UyxnUuwDbooNRcgKa1ZFGAEeQd_R6TAZ5ML86q1blByKty1qb0xRe6uLhQD3ZpLWqwBQEO6Qdb7euLjZx000FqmZZmrewaDh7u25wJusLgrUTOpznscL6HfWkt7eS9sznpzwOUWpqsKhrG2LS6W104XhdpvvYMN5CQE8ejuVBnNGh3BIcz8pbL5HcCHlQe2JYEOXggttVEYleVH1rQ2D8HGIoT_yw',
-        }
-
         const response = await sendRequest(
-          `${host}/api/v1/auth/signIn`,
+          '/api/v1/auth/signIn',
           {
             method: 'POST',
             body: {
               email: credentials?.username,
               password: credentials?.password,
             } as { email: string; password: string },
-            headers,
           }
         ) as { data?: any; error?: any, status?: number }
 
