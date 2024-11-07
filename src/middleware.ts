@@ -3,7 +3,9 @@ import { auth as middleware } from '@/auth'
 export default middleware((req) => {
   const isExcludedPath =
     req.nextUrl.pathname.startsWith('/images') ||
-    req.nextUrl.pathname === '/auth/register'
+    req.nextUrl.pathname === '/auth/register' ||
+    req.nextUrl.pathname.startsWith('/verify') ||
+    req.nextUrl.pathname.startsWith('/_next/static')
 
   if (!req.auth && req.nextUrl.pathname !== '/auth/login' && !isExcludedPath) {
     const newUrl = new URL('/auth/login', req.nextUrl.origin)

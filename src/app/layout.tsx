@@ -1,10 +1,11 @@
 import type { Metadata } from "next"
 import localFont from "next/font/local"
-import "@/app/globals.css"
 import { ThemeModeScript, Flowbite } from "flowbite-react"
 import theme from '@/flowbite-theme'
 import { SessionProvider } from "next-auth/react"
 import { Session } from "next-auth"
+
+import "@/app/globals.css"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

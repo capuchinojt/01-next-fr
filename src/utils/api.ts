@@ -9,8 +9,8 @@ export const sendRequest = async <T>(
       ...options,
       headers: {
         'Content-Type': 'application/json',
-        Authorization:
-          `Bearer ${process.env.NEXT_PUBLIC_BACKEND_TOKEN}`,
+        // Authorization:
+        //   `Bearer ${process.env.NEXT_PUBLIC_BACKEND_TOKEN}`,
         ...options.headers,
       },
     }
@@ -23,7 +23,9 @@ export const sendRequest = async <T>(
       fetchOptions.body = JSON.stringify(options.body)
     }
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}${url}`, fetchOptions)
+    const fulUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}${url}`
+    console.log('>> check fulUrl:: ', fulUrl)
+    const response = await fetch(fulUrl, fetchOptions)
 
     if (!response.ok) {
       const { errorCode, message } = await response.json()
