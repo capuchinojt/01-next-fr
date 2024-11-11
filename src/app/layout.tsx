@@ -3,9 +3,9 @@ import localFont from "next/font/local"
 import { ThemeModeScript, Flowbite } from "flowbite-react"
 import theme from '@/flowbite-theme'
 import { SessionProvider } from "next-auth/react"
-import { Session } from "next-auth"
 
 import "@/app/globals.css"
+import { auth } from "@/auth"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -25,13 +25,12 @@ export const metadata: Metadata = {
 
 interface RootLayoutProps {
   children: React.ReactNode
-  session: Session
 }
 
-export default function RootLayout({
-  children,
-  session
+export default async function RootLayout({
+  children
 }: RootLayoutProps) {
+  const session = await auth()
   return (
     <html lang="en" suppressHydrationWarning>
       <head>

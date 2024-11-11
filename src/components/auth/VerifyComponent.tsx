@@ -9,9 +9,7 @@ import { useState } from 'react'
 
 const VerifyComponent = ({ id }: { id: string }) => {
    const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
+    activationCode: '',
   })
 
   const [error, setError] = useState<string | null>(null)
@@ -34,12 +32,11 @@ const VerifyComponent = ({ id }: { id: string }) => {
     setSuccessMessage(null)
 
     try {
-      const response = await sendRequest('/api/v1/auth/register', {
+      const response = await sendRequest('/api/v1/auth/verify', {
         method: 'POST',
         body: {
-          email: formData?.email,
-          password: formData?.password,
-          name: getUsernameFromEmail(formData?.email)
+          id,
+          activationCode: formData?.activationCode,
         },
       })
 
@@ -50,7 +47,8 @@ const VerifyComponent = ({ id }: { id: string }) => {
         throw new Error('Registration failed!')
       }
 
-      route.push(`/verify/${data?.data?._id}`)
+      route.push('/')
+
       setSuccessMessage('Registration successful!')
       console.log('User registered:', data)
     } catch (error) {
@@ -95,8 +93,8 @@ const VerifyComponent = ({ id }: { id: string }) => {
           <div className="mb-6 flex flex-col gap-y-3">
             <Label htmlFor="password">Please input your verify code sent to your email</Label>
             <TextInput
-              id="verifyCode"
-              name="verifyCode"
+              id="activationCode"
+              name="activationCode"
               placeholder="Verification code"
               type="text"
               onChange={handleChange}

@@ -3,7 +3,7 @@ import '@/app/globals.css'
 import { ThemeModeScript, Flowbite } from 'flowbite-react'
 import theme from '@/flowbite-theme'
 import { SessionProvider } from 'next-auth/react'
-import { Session } from 'next-auth'
+import { auth } from '@/auth'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -12,10 +12,10 @@ export const metadata: Metadata = {
 
 interface RootLayoutProps {
   children: React.ReactNode
-  session: Session
 }
 
-export default function RootLayout({ children, session }: RootLayoutProps) {
+export default async function RootLayout({ children }: RootLayoutProps) {
+  const session = await auth()
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
